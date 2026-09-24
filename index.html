@@ -41,7 +41,7 @@
     const time = document.getElementById("time");
     const update = () => time.textContent = new Date().toLocaleTimeString("it-IT", { hour12: false });
     update();
-    setInterval(update, 1000);
+    setInterval(update, 100);
   </script>
 </body>
 </html>
