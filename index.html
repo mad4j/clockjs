@@ -13,12 +13,13 @@
       display: grid;
       place-items: center;
       padding: 4vh 3vw;
-      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: "Inter", "Aptos", "Segoe UI", Roboto, sans-serif;
       background: linear-gradient(135deg, #f8fafc, #e8f1f8);
     }
     .clock {
       display: grid;
       place-items: center;
+      container-type: inline-size;
       width: min(94vw, 1200px);
       min-height: clamp(16rem, 68vh, 680px);
       padding: clamp(1.5rem, 6vw, 5rem);
@@ -31,11 +32,12 @@
     }
     #time {
       margin: 0;
-      font-size: clamp(2.5rem, 13vw, 10rem);
-      font-weight: 700;
+      font-size: clamp(2.5rem, 19cqi, 15rem);
+      font-weight: 600;
       letter-spacing: .04em;
       font-variant-numeric: tabular-nums;
     }
+    .separator { font-size: .62em; }
   </style>
 </head>
 <body>
@@ -44,7 +46,22 @@
   </main>
   <script>
     const time = document.getElementById("time");
-    const update = () => time.textContent = new Date().toLocaleTimeString("it-IT", { hour12: false });
+    const update = () => {
+      const formattedTime = new Date().toLocaleTimeString("it-IT", { hour12: false });
+      const fragments = [];
+      formattedTime.split(":").forEach((part, index) => {
+        if (index > 0) {
+          const separator = document.createElement("span");
+          separator.className = "separator";
+          separator.setAttribute("aria-hidden", "true");
+          separator.textContent = ":";
+          fragments.push(separator);
+        }
+        fragments.push(document.createTextNode(part));
+      });
+      time.replaceChildren(...fragments);
+      time.setAttribute("aria-label", formattedTime);
+    };
     update();
     setInterval(update, 100);
   </script>
